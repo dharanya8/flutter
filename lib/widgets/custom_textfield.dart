@@ -1,10 +1,9 @@
-// lib/widgets/custom_textfield.dart
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../constants/app_colors.dart';
+import '../constants/app_spacing.dart';
 
-class CustomTextField extends StatelessWidget {
+class CustomTextField extends StatefulWidget {
   final TextEditingController controller;
   final String label;
   final String hint;
@@ -27,40 +26,99 @@ class CustomTextField extends StatelessWidget {
   });
 
   @override
+  State<CustomTextField> createState() => _CustomTextFieldState();
+}
+
+class _CustomTextFieldState extends State<CustomTextField> {
+  late bool _obscureText;
+
+  @override
+  void initState() {
+    super.initState();
+    _obscureText = widget.obscureText;
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.cardDark,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey.shade800),
+    return TextFormField(
+      controller: widget.controller,
+      obscureText: _obscureText,
+      keyboardType: widget.keyboardType,
+      validator: widget.validator,
+      style: GoogleFonts.poppins(
+        color: AppColors.textPrimary,
+        fontSize: 16,
+        fontWeight: FontWeight.w500,
       ),
-      child: TextFormField(
-        controller: controller,
-        obscureText: obscureText,
-        keyboardType: keyboardType,
-        validator: validator,
-        style: GoogleFonts.poppins(color: AppColors.textPrimary),
-        decoration: InputDecoration(
-          labelText: label,
-          hintText: hint,
-
-          labelStyle: GoogleFonts.poppins(color: AppColors.textSecondary),
-
-          hintStyle: GoogleFonts.poppins(
-            color: Colors.grey.shade500,
-            fontSize: 14,
+      decoration: InputDecoration(
+        labelText: widget.label,
+        hintText: widget.hint,
+        labelStyle: GoogleFonts.poppins(
+          color: AppColors.textSecondary,
+          fontSize: 14,
+          fontWeight: FontWeight.w500,
+        ),
+        hintStyle: GoogleFonts.poppins(
+          color: AppColors.textTertiary,
+          fontSize: 14,
+        ),
+        prefixIcon: Icon(
+          widget.prefixIcon,
+          color: AppColors.primary,
+          size: AppSpacing.iconMedium,
+        ),
+        suffixIcon: widget.obscureText
+            ? GestureDetector(
+                onTap: () {
+                  setState(() {
+                    _obscureText = !_obscureText;
+                  });
+                },
+                child: Icon(
+                  _obscureText ? Icons.visibility_off : Icons.visibility,
+                  color: AppColors.textSecondary,
+                ),
+              )
+            : widget.suffixIcon,
+        filled: true,
+        fillColor: AppColors.surface,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
+          borderSide: BorderSide.none,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
+          borderSide: BorderSide(
+            color: AppColors.textSecondary.withOpacity(0.2),
           ),
-
-          prefixIcon: Icon(prefixIcon, color: AppColors.primary),
-
-          suffixIcon: suffixIcon,
-
-          border: InputBorder.none,
-
-          contentPadding: const EdgeInsets.symmetric(
-            vertical: 18,
-            horizontal: 16,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
+          borderSide: const BorderSide(
+            color: AppColors.primary,
+            width: 2,
           ),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
+          borderSide: const BorderSide(
+            color: AppColors.error,
+          ),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
+          borderSide: const BorderSide(
+            color: AppColors.error,
+            width: 2,
+          ),
+        ),
+        contentPadding: const EdgeInsets.symmetric(
+          vertical: AppSpacing.lg,
+          horizontal: AppSpacing.lg,
+        ),
+        errorStyle: GoogleFonts.poppins(
+          color: AppColors.error,
+          fontSize: 12,
         ),
       ),
     );

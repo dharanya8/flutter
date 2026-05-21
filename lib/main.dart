@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import '../screens/splash_screen.dart';
-import '../constants/app_colors.dart';
-import '../constants/app_styles.dart';
+import 'screens/splash_screen.dart';
+import 'constants/app_theme.dart';
 
 void main() {
   runApp(const ToToSportsApp());
@@ -14,19 +13,7 @@ class ToToSportsApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'ToTo Sports',
-      theme: ThemeData.dark().copyWith(
-        primaryColor: AppColors.primary,
-        scaffoldBackgroundColor: AppColors.background,
-        colorScheme: const ColorScheme.dark(
-          primary: AppColors.primary,
-          secondary: AppColors.primary,
-        ),
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          centerTitle: true,
-        ),
-      ),
+      theme: AppTheme.darkTheme(),
       debugShowCheckedModeBanner: false,
       home: const SplashScreen(),
     );

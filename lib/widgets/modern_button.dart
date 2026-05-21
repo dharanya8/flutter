@@ -3,29 +3,37 @@ import 'package:google_fonts/google_fonts.dart';
 import '../constants/app_colors.dart';
 import '../constants/app_spacing.dart';
 
-class CustomButton extends StatefulWidget {
+class ModernButton extends StatefulWidget {
   final String text;
   final VoidCallback onPressed;
   final bool isLoading;
   final IconData? icon;
+  final ButtonStyle? style;
   final bool isOutlined;
+  final bool isTextButton;
   final double? width;
+  final double height;
+  final List<Color>? gradientColors;
 
-  const CustomButton({
+  const ModernButton({
     super.key,
     required this.text,
     required this.onPressed,
     this.isLoading = false,
     this.icon,
+    this.style,
     this.isOutlined = false,
+    this.isTextButton = false,
     this.width,
+    this.height = AppSpacing.buttonHeight,
+    this.gradientColors,
   });
 
   @override
-  State<CustomButton> createState() => _CustomButtonState();
+  State<ModernButton> createState() => _ModernButtonState();
 }
 
-class _CustomButtonState extends State<CustomButton>
+class _ModernButtonState extends State<ModernButton>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
 
@@ -58,6 +66,20 @@ class _CustomButtonState extends State<CustomButton>
 
   @override
   Widget build(BuildContext context) {
+    if (widget.isTextButton) {
+      return TextButton(
+        onPressed: widget.isLoading ? null : widget.onPressed,
+        child: Text(
+          widget.text,
+          style: GoogleFonts.poppins(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            color: AppColors.primary,
+          ),
+        ),
+      );
+    }
+
     return GestureDetector(
       onTapDown: _handleTapDown,
       onTapUp: _handleTapUp,
@@ -69,15 +91,21 @@ class _CustomButtonState extends State<CustomButton>
         ),
         child: Container(
           width: widget.width ?? double.infinity,
-          height: AppSpacing.buttonHeight,
+          height: widget.height,
           decoration: BoxDecoration(
-            gradient: widget.isOutlined
-                ? null
-                : const LinearGradient(
-                    colors: AppColors.primaryGradient,
+            gradient: widget.gradientColors != null
+                ? LinearGradient(
+                    colors: widget.gradientColors!,
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
-                  ),
+                  )
+                : (widget.isOutlined
+                    ? null
+                    : const LinearGradient(
+                        colors: AppColors.primaryGradient,
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      )),
             color: widget.isOutlined ? Colors.transparent : null,
             borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
             border: widget.isOutlined

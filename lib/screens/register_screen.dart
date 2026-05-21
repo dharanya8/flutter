@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../screens/success_screen.dart';
+import '../widgets/modern_button.dart';
+import '../widgets/custom_textfield.dart';
 import '../models/sport_model.dart';
+import '../constants/app_colors.dart';
+import '../constants/app_spacing.dart';
 
 class RegisterScreen extends StatefulWidget {
   final SportModel sport;
@@ -15,11 +20,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final TextEditingController _fullNameController = TextEditingController();
-
   final TextEditingController _phoneController = TextEditingController();
-
   final TextEditingController _emailController = TextEditingController();
-
   final TextEditingController _teamNameController = TextEditingController();
 
   bool _isLoading = false;
@@ -28,27 +30,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-
-        backgroundColor: isError ? Colors.red : Colors.green,
-
+        backgroundColor: isError ? AppColors.error : AppColors.success,
         behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+        ),
       ),
     );
   }
 
   Future<void> _submitRegistration() async {
     if (_formKey.currentState!.validate()) {
-      setState(() {
-        _isLoading = true;
-      });
-
+      setState(() => _isLoading = true);
       await Future.delayed(const Duration(seconds: 2));
 
       if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-
+        setState(() => _isLoading = false);
         _showSnackbar('Registration Successful!');
 
         Navigator.pushReplacement(
@@ -70,309 +67,169 @@ class _RegisterScreenState extends State<RegisterScreen> {
     super.dispose();
   }
 
-  Widget customTextField({
-    required TextEditingController controller,
-    required String label,
-    required String hint,
-    required IconData icon,
-    TextInputType keyboardType = TextInputType.text,
-    required String? Function(String?) validator,
-  }) {
-    return TextFormField(
-      controller: controller,
-      keyboardType: keyboardType,
-      style: const TextStyle(color: Colors.white),
-
-      decoration: InputDecoration(
-        labelText: label,
-        hintText: hint,
-
-        hintStyle: const TextStyle(color: Colors.grey),
-
-        labelStyle: const TextStyle(color: Colors.white),
-
-        prefixIcon: Icon(icon, color: Colors.orange),
-
-        filled: true,
-        fillColor: const Color(0xff1E293B),
-
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(18),
-
-          borderSide: BorderSide.none,
-        ),
-
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(18),
-
-          borderSide: const BorderSide(color: Colors.orange, width: 2),
-        ),
-      ),
-
-      validator: validator,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xff0F172A),
-
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        centerTitle: true,
-
         title: Text(
-          "${widget.sport.name} Registration",
-
-          style: const TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
+          '${widget.sport.name} Registration',
+          style: GoogleFonts.poppins(
+            fontWeight: FontWeight.w700,
           ),
         ),
-
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
+        elevation: 0,
       ),
-
-      body: Container(
-        width: double.infinity,
-
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color(0xff0F172A), Color(0xff1E293B), Color(0xff334155)],
-
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
-
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(20),
-
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(AppSpacing.lg),
           child: Form(
             key: _formKey,
-
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-
               children: [
-                // HEADER CARD
+                // Header card
                 Container(
                   width: double.infinity,
-
-                  padding: const EdgeInsets.all(25),
-
+                  padding: const EdgeInsets.all(AppSpacing.xl),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(25),
-
                     gradient: LinearGradient(
                       colors: [
                         widget.sport.color,
                         widget.sport.color.withOpacity(0.7),
                       ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
                     ),
-
+                    borderRadius: BorderRadius.circular(AppSpacing.radiusXxl),
                     boxShadow: [
                       BoxShadow(
                         color: widget.sport.color.withOpacity(0.4),
-
-                        blurRadius: 15,
-
+                        blurRadius: 16,
                         offset: const Offset(0, 8),
                       ),
                     ],
                   ),
-
                   child: Column(
                     children: [
-                      CircleAvatar(
-                        radius: 38,
-
-                        backgroundColor: Colors.white,
-
+                      Container(
+                        padding: const EdgeInsets.all(AppSpacing.lg),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
+                        ),
                         child: Icon(
                           widget.sport.icon,
-                          size: 45,
-                          color: widget.sport.color,
+                          size: 48,
+                          color: Colors.white,
                         ),
                       ),
-
-                      const SizedBox(height: 15),
-
+                      const SizedBox(height: AppSpacing.lg),
                       Text(
                         widget.sport.name,
-
-                        style: const TextStyle(
+                        style: GoogleFonts.poppins(
                           color: Colors.white,
                           fontSize: 26,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w700,
                         ),
                       ),
-
-                      const SizedBox(height: 8),
-
-                      const Text(
-                        "Tournament Registration Form",
-
-                        style: TextStyle(color: Colors.white70, fontSize: 15),
+                      const SizedBox(height: AppSpacing.md),
+                      Text(
+                        'Tournament Registration Form',
+                        style: GoogleFonts.poppins(
+                          color: Colors.white.withOpacity(0.9),
+                          fontSize: 14,
+                        ),
                       ),
                     ],
                   ),
                 ),
-
-                const SizedBox(height: 30),
-
-                const Text(
-                  "Personal Details",
-
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
+                const SizedBox(height: AppSpacing.xxxl),
+                // Section title
+                Text(
+                  'Personal Details',
+                  style: GoogleFonts.poppins(
+                    color: AppColors.textPrimary,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
-
-                const SizedBox(height: 20),
-
-                // FULL NAME
-                customTextField(
+                const SizedBox(height: AppSpacing.lg),
+                // Full name
+                CustomTextField(
                   controller: _fullNameController,
-
-                  label: "Full Name",
-
-                  hint: "Enter your name",
-
-                  icon: Icons.person,
-
+                  label: 'Full Name',
+                  hint: 'Enter your full name',
+                  prefixIcon: Icons.person,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return "Enter full name";
+                      return 'Enter full name';
                     }
-
                     return null;
                   },
                 ),
-
-                const SizedBox(height: 18),
-
-                // PHONE
-                customTextField(
+                const SizedBox(height: AppSpacing.lg),
+                // Phone
+                CustomTextField(
                   controller: _phoneController,
-
-                  label: "Phone Number",
-
-                  hint: "Enter phone number",
-
-                  icon: Icons.phone,
-
+                  label: 'Phone Number',
+                  hint: 'Enter your phone number',
+                  prefixIcon: Icons.phone,
                   keyboardType: TextInputType.phone,
-
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return "Enter phone number";
+                      return 'Enter phone number';
                     }
-
                     if (value.length < 10) {
-                      return "Invalid phone number";
+                      return 'Invalid phone number';
                     }
-
                     return null;
                   },
                 ),
-
-                const SizedBox(height: 18),
-
-                // EMAIL
-                customTextField(
+                const SizedBox(height: AppSpacing.lg),
+                // Email
+                CustomTextField(
                   controller: _emailController,
-
-                  label: "Email",
-
-                  hint: "Enter email",
-
-                  icon: Icons.email,
-
+                  label: 'Email Address',
+                  hint: 'Enter your email',
+                  prefixIcon: Icons.email,
                   keyboardType: TextInputType.emailAddress,
-
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return "Enter email";
+                      return 'Enter email';
                     }
-
-                    if (!value.contains("@")) {
-                      return "Invalid email";
+                    if (!value.contains('@')) {
+                      return 'Invalid email';
                     }
-
                     return null;
                   },
                 ),
-
-                const SizedBox(height: 18),
-
-                // TEAM NAME
-                customTextField(
+                const SizedBox(height: AppSpacing.lg),
+                // Team name
+                CustomTextField(
                   controller: _teamNameController,
-
-                  label: "Team Name",
-
-                  hint: "Enter team name",
-
-                  icon: Icons.group,
-
+                  label: 'Team Name',
+                  hint: 'Enter your team name',
+                  prefixIcon: Icons.group,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return "Enter team name";
+                      return 'Enter team name';
                     }
-
                     return null;
                   },
                 ),
-
-                const SizedBox(height: 35),
-
-                // REGISTER BUTTON
-                SizedBox(
-                  width: double.infinity,
-                  height: 60,
-
-                  child: ElevatedButton(
-                    onPressed: _isLoading ? null : _submitRegistration,
-
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: widget.sport.color,
-
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18),
-                      ),
-
-                      elevation: 10,
-                    ),
-
-                    child: _isLoading
-                        ? const CircularProgressIndicator(color: Colors.white)
-                        : const Text(
-                            "REGISTER NOW",
-
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-
-                              letterSpacing: 1,
-
-                              color: Colors.white,
-                            ),
-                          ),
-                  ),
+                const SizedBox(height: AppSpacing.xxxl),
+                // Register button
+                ModernButton(
+                  text: 'Register Now',
+                  onPressed: _submitRegistration,
+                  isLoading: _isLoading,
+                  gradientColors: [
+                    widget.sport.color,
+                    widget.sport.color.withOpacity(0.7),
+                  ],
                 ),
-
-                const SizedBox(height: 30),
+                const SizedBox(height: AppSpacing.xl),
               ],
             ),
           ),

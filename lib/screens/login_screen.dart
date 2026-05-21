@@ -1,9 +1,12 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../screens/home_screen.dart';
 import '../widgets/custom_textfield.dart';
+import '../widgets/modern_button.dart';
 import '../constants/app_colors.dart';
 import '../constants/app_styles.dart';
+import '../constants/app_spacing.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -14,7 +17,6 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
-
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _otpController = TextEditingController();
@@ -22,7 +24,6 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isLoading = false;
   String generatedOtp = '';
 
-  // Snackbar
   void _showSnackbar(String message, {bool isError = false}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -30,11 +31,11 @@ class _LoginScreenState extends State<LoginScreen> {
         backgroundColor: isError ? AppColors.error : AppColors.success,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        margin: const EdgeInsets.all(AppSpacing.lg),
       ),
     );
   }
 
-  // OTP Generate
   void _sendOtp() {
     if (_phoneController.text.isEmpty) {
       _showSnackbar('Enter phone number', isError: true);
@@ -58,7 +59,6 @@ class _LoginScreenState extends State<LoginScreen> {
     _showSnackbar('OTP Sent Successfully');
   }
 
-  // Login
   Future<void> _login() async {
     if (!_formKey.currentState!.validate()) return;
 
@@ -68,13 +68,11 @@ class _LoginScreenState extends State<LoginScreen> {
     }
 
     setState(() => _isLoading = true);
-
     await Future.delayed(const Duration(seconds: 2));
 
     if (!mounted) return;
 
     setState(() => _isLoading = false);
-
     _showSnackbar('Login Successful');
 
     Navigator.pushReplacement(
@@ -96,216 +94,224 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  Widget _circle(double size, Color color) {
-    return Container(
-      width: size,
-      height: size,
-      decoration: BoxDecoration(shape: BoxShape.circle, color: color),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color(0xFF0F2027), Color(0xFF203A43), Color(0xFF2C5364)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
+        decoration: AppStyles.gradientBackground,
         child: Stack(
           children: [
-            // Background circles
+            // Gradient background spheres
             Positioned(
-              top: -60,
+              top: -80,
+              right: -80,
+              child: Container(
+                width: 200,
+                height: 200,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: LinearGradient(
+                    colors: [
+                      AppColors.primary.withOpacity(0.2),
+                      AppColors.secondary.withOpacity(0.1),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
+              bottom: -120,
               left: -60,
-              child: _circle(140, Colors.white24),
+              child: Container(
+                width: 250,
+                height: 250,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: LinearGradient(
+                    colors: [
+                      AppColors.accent2.withOpacity(0.1),
+                      AppColors.primary.withOpacity(0.05),
+                    ],
+                  ),
+                ),
+              ),
             ),
-            Positioned(
-              bottom: -80,
-              right: -50,
-              child: _circle(180, Colors.white10),
-            ),
-
-            Center(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(20),
-                child: Form(
-                  key: _formKey,
-                  child: Container(
-                    padding: const EdgeInsets.all(22),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.08),
-                      borderRadius: BorderRadius.circular(25),
-                      border: Border.all(color: Colors.white24),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.3),
-                          blurRadius: 20,
-                          spreadRadius: 5,
-                        ),
-                      ],
-                    ),
+            // Main content
+            SingleChildScrollView(
+              child: SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.lg,
+                    vertical: AppSpacing.xl,
+                  ),
+                  child: Form(
+                    key: _formKey,
                     child: Column(
-                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const SizedBox(height: 10),
-
-                        // Icon
+                        const SizedBox(height: AppSpacing.xxl),
+                        // Header
                         Container(
-                          padding: const EdgeInsets.all(18),
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            gradient: LinearGradient(
-                              colors: [Colors.purple, Colors.blue],
+                          padding: const EdgeInsets.all(AppSpacing.lg),
+                          decoration: BoxDecoration(
+                            gradient: const LinearGradient(
+                              colors: AppColors.premiumGradient,
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
                             ),
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                color: AppColors.primary.withOpacity(0.4),
+                                blurRadius: 20,
+                                spreadRadius: 5,
+                              ),
+                            ],
                           ),
                           child: const Icon(
                             Icons.lock_outline,
                             color: Colors.white,
-                            size: 40,
+                            size: 50,
                           ),
                         ),
-
-                        const SizedBox(height: 15),
-
-                        const Text(
-                          "Welcome Back",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        const SizedBox(height: AppSpacing.xxl),
+                        Text(
+                          'Welcome Back',
+                          style: AppStyles.heading2,
                         ),
-
-                        const SizedBox(height: 5),
-
-                        const Text(
-                          "Login with OTP Verification",
-                          style: TextStyle(color: Colors.white70),
+                        const SizedBox(height: AppSpacing.md),
+                        Text(
+                          'Login with OTP Verification',
+                          style: AppStyles.bodyMedium,
+                          textAlign: TextAlign.center,
                         ),
-
-                        const SizedBox(height: 25),
-
-                        // Name
-                        CustomTextField(
-                          controller: _nameController,
-                          label: 'Name',
-                          hint: 'Enter your name',
-                          prefixIcon: Icons.person,
-                          validator: (v) => v!.isEmpty ? 'Enter name' : null,
-                        ),
-
-                        const SizedBox(height: 15),
-
-                        // Phone
-                        CustomTextField(
-                          controller: _phoneController,
-                          label: 'Phone',
-                          hint: 'Enter phone number',
-                          prefixIcon: Icons.phone,
-                          keyboardType: TextInputType.phone,
-                          validator: (v) {
-                            if (v == null || v.isEmpty) {
-                              return 'Enter phone';
-                            }
-                            if (!RegExp(r'^[0-9]+$').hasMatch(v)) {
-                              return 'Only digits allowed';
-                            }
-                            if (v.length != 10) {
-                              return 'Must be 10 digits';
-                            }
-                            return null;
-                          },
-                        ),
-
-                        const SizedBox(height: 15),
-
-                        // Send OTP
-                        SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            onPressed: _sendOtp,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blueAccent,
-                              foregroundColor: Colors.black,
-                              padding: const EdgeInsets.symmetric(vertical: 14),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15),
+                        const SizedBox(height: AppSpacing.xxxl),
+                        // Glass morphism card
+                        Container(
+                          padding: const EdgeInsets.all(AppSpacing.xl),
+                          decoration: BoxDecoration(
+                            color: AppColors.surface.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(AppSpacing.radiusXl),
+                            border: Border.all(
+                              color: Colors.white.withOpacity(0.15),
+                              width: 1.5,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.2),
+                                blurRadius: 20,
+                                spreadRadius: 5,
                               ),
-                            ),
-                            child: const Text("Send OTP"),
+                            ],
                           ),
-                        ),
-
-                        const SizedBox(height: 15),
-
-                        // OTP Display
-                        if (generatedOtp.isNotEmpty)
-                          Container(
-                            padding: const EdgeInsets.all(12),
-                            decoration: BoxDecoration(
-                              color: Colors.black26,
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(color: Colors.white24),
-                            ),
-                            child: Text(
-                              "OTP: $generatedOtp",
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                letterSpacing: 4,
-                                fontWeight: FontWeight.bold,
+                          child: Column(
+                            children: [
+                              // Name
+                              CustomTextField(
+                                controller: _nameController,
+                                label: 'Full Name',
+                                hint: 'Enter your full name',
+                                prefixIcon: Icons.person,
+                                validator: (v) =>
+                                    v!.isEmpty ? 'Enter name' : null,
                               ),
-                            ),
-                          ),
-
-                        const SizedBox(height: 15),
-
-                        // OTP input
-                        CustomTextField(
-                          controller: _otpController,
-                          label: 'OTP',
-                          hint: 'Enter OTP',
-                          prefixIcon: Icons.lock,
-                          keyboardType: TextInputType.number,
-                          validator: (v) {
-                            if (v == null || v.isEmpty) {
-                              return 'Enter OTP';
-                            }
-                            if (v.length != 4) {
-                              return 'OTP must be 4 digits';
-                            }
-                            return null;
-                          },
-                        ),
-
-                        const SizedBox(height: 25),
-
-                        // Login Button
-                        SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            onPressed: _login,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blueAccent,
-                              foregroundColor: Colors.black,
-                              padding: const EdgeInsets.symmetric(vertical: 15),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15),
+                              const SizedBox(height: AppSpacing.lg),
+                              // Phone
+                              CustomTextField(
+                                controller: _phoneController,
+                                label: 'Phone Number',
+                                hint: 'Enter your phone number',
+                                prefixIcon: Icons.phone,
+                                keyboardType: TextInputType.phone,
+                                validator: (v) {
+                                  if (v == null || v.isEmpty) {
+                                    return 'Enter phone';
+                                  }
+                                  if (!RegExp(r'^[0-9]+$').hasMatch(v)) {
+                                    return 'Only digits allowed';
+                                  }
+                                  if (v.length != 10) {
+                                    return 'Must be 10 digits';
+                                  }
+                                  return null;
+                                },
                               ),
-                            ),
-                            child: _isLoading
-                                ? const CircularProgressIndicator(
-                                    color: Colors.black,
-                                  )
-                                : const Text("Login"),
+                              const SizedBox(height: AppSpacing.lg),
+                              // Send OTP button
+                              ModernButton(
+                                text: 'Send OTP',
+                                onPressed: _sendOtp,
+                              ),
+                              // OTP Display
+                              if (generatedOtp.isNotEmpty) ...[
+                                const SizedBox(height: AppSpacing.lg),
+                                Container(
+                                  padding: const EdgeInsets.all(AppSpacing.lg),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.primary.withOpacity(0.15),
+                                    borderRadius: BorderRadius.circular(
+                                      AppSpacing.radiusLg,
+                                    ),
+                                    border: Border.all(
+                                      color: AppColors.primary.withOpacity(0.3),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.info_outline,
+                                        color: AppColors.primary,
+                                        size: AppSpacing.iconMedium,
+                                      ),
+                                      const SizedBox(width: AppSpacing.md),
+                                      Text(
+                                        'OTP: $generatedOtp',
+                                        style: GoogleFonts.poppins(
+                                          color: AppColors.primary,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w700,
+                                          letterSpacing: 2,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                              if (generatedOtp.isNotEmpty) ...[
+                                const SizedBox(height: AppSpacing.lg),
+                                // OTP input
+                                CustomTextField(
+                                  controller: _otpController,
+                                  label: 'Enter OTP',
+                                  hint: 'Enter 4-digit OTP',
+                                  prefixIcon: Icons.verified_user,
+                                  keyboardType: TextInputType.number,
+                                  validator: (v) {
+                                    if (v == null || v.isEmpty) {
+                                      return 'Enter OTP';
+                                    }
+                                    if (v.length != 4) {
+                                      return 'OTP must be 4 digits';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                                const SizedBox(height: AppSpacing.xl),
+                                // Login button
+                                ModernButton(
+                                  text: 'Login',
+                                  onPressed: _login,
+                                  isLoading: _isLoading,
+                                  gradientColors:
+                                      AppColors.purpleGradient,
+                                ),
+                              ],
+                            ],
                           ),
                         ),
+                        const SizedBox(height: AppSpacing.xxxl),
                       ],
                     ),
                   ),
