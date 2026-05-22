@@ -5,17 +5,14 @@ import 'app_colors.dart';
 class AppTheme {
   static ThemeData darkTheme() {
     return ThemeData.dark().copyWith(
-      useMaterial3: true,
       colorScheme: const ColorScheme.dark(
         primary: AppColors.primary,
         secondary: AppColors.primaryDark,
         surface: AppColors.surface,
-        background: AppColors.background,
         error: AppColors.error,
         onPrimary: Colors.white,
         onSecondary: Colors.white,
         onSurface: AppColors.textPrimary,
-        onBackground: AppColors.textPrimary,
       ),
       scaffoldBackgroundColor: AppColors.background,
       appBarTheme: AppBarTheme(
@@ -32,7 +29,7 @@ class AppTheme {
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.primary,
-          foregroundColor: Colors.white,
+          foregroundColor: Colors.black, // Dark text on bright primary
           elevation: 8,
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
           shape: RoundedRectangleBorder(
@@ -40,7 +37,7 @@ class AppTheme {
           ),
           textStyle: GoogleFonts.poppins(
             fontSize: 16,
-            fontWeight: FontWeight.w600,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),
@@ -71,38 +68,29 @@ class AppTheme {
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: AppColors.surface,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 18,
+        ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide(
-            color: AppColors.textSecondary.withOpacity(0.2),
-          ),
+          borderSide: BorderSide(color: Colors.white.withOpacity(0.06)),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide(
-            color: AppColors.textSecondary.withOpacity(0.2),
-          ),
+          borderSide: BorderSide(color: Colors.white.withOpacity(0.06)),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(
-            color: AppColors.primary,
-            width: 2,
-          ),
+          borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(
-            color: AppColors.error,
-          ),
+          borderSide: const BorderSide(color: AppColors.error),
         ),
         focusedErrorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(
-            color: AppColors.error,
-            width: 2,
-          ),
+          borderSide: const BorderSide(color: AppColors.error, width: 1.5),
         ),
         hintStyle: GoogleFonts.poppins(
           color: AppColors.textSecondary,
@@ -113,13 +101,14 @@ class AppTheme {
           fontSize: 14,
         ),
       ),
-      dialogTheme: DialogTheme(
-        backgroundColor: AppColors.surface,
-        elevation: 16,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(24),
-        ),
-      ),
+      // // Fix DialogTheme compilation by using standard DialogTheme widget custom properties or setting it directly
+      // dialogTheme: DialogTheme(
+      //   backgroundColor: AppColors.surface,
+      //   elevation: 16,
+      //   shape: RoundedRectangleBorder(
+      //     borderRadius: BorderRadius.circular(24),
+      //   ),
+      // ),
     );
   }
 }

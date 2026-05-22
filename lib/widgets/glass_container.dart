@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
 import '../constants/app_spacing.dart';
@@ -12,6 +13,7 @@ class GlassContainer extends StatelessWidget {
   final double blurValue;
   final Color borderColor;
   final double borderWidth;
+  final Color? backgroundColor;
 
   const GlassContainer({
     super.key,
@@ -21,9 +23,10 @@ class GlassContainer extends StatelessWidget {
     this.padding = const EdgeInsets.all(AppSpacing.lg),
     this.margin = const EdgeInsets.all(AppSpacing.md),
     this.borderRadius = AppSpacing.radiusXl,
-    this.blurValue = 20,
+    this.blurValue = 16,
     this.borderColor = Colors.white,
-    this.borderWidth = 1.5,
+    this.borderWidth = 1.0,
+    this.backgroundColor,
   });
 
   @override
@@ -31,24 +34,35 @@ class GlassContainer extends StatelessWidget {
     return Container(
       width: width,
       height: height,
-      padding: padding,
       margin: margin,
       decoration: BoxDecoration(
-        color: AppColors.surface.withOpacity(0.1),
         borderRadius: BorderRadius.circular(borderRadius),
-        border: Border.all(
-          color: borderColor.withOpacity(0.15),
-          width: borderWidth,
-        ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
+            color: Colors.black.withOpacity(0.35),
             blurRadius: blurValue,
-            spreadRadius: 5,
+            offset: const Offset(0, 10),
           ),
         ],
       ),
-      child: child,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(borderRadius),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: blurValue, sigmaY: blurValue),
+          child: Container(
+            padding: padding,
+            decoration: BoxDecoration(
+              color: backgroundColor ?? AppColors.surface.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(borderRadius),
+              border: Border.all(
+                color: borderColor.withOpacity(0.12),
+                width: borderWidth,
+              ),
+            ),
+            child: child,
+          ),
+        ),
+      ),
     );
   }
 }

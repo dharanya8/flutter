@@ -3,39 +3,40 @@ import 'package:google_fonts/google_fonts.dart';
 import 'app_colors.dart';
 
 class AppStyles {
-  // Heading styles
+  // Typography - High-End Premium Headers
   static TextStyle heading1 = GoogleFonts.poppins(
-    fontSize: 32,
-    fontWeight: FontWeight.w700,
+    fontSize: 34,
+    fontWeight: FontWeight.w800,
     color: AppColors.textPrimary,
-    letterSpacing: 0.5,
+    letterSpacing: 0.8,
   );
 
   static TextStyle heading2 = GoogleFonts.poppins(
     fontSize: 28,
     fontWeight: FontWeight.w700,
     color: AppColors.textPrimary,
-    letterSpacing: 0.3,
+    letterSpacing: 0.5,
   );
 
   static TextStyle heading3 = GoogleFonts.poppins(
-    fontSize: 24,
-    fontWeight: FontWeight.w600,
+    fontSize: 22,
+    fontWeight: FontWeight.w700,
     color: AppColors.textPrimary,
+    letterSpacing: 0.3,
   );
 
   static TextStyle heading4 = GoogleFonts.poppins(
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: FontWeight.w600,
     color: AppColors.textPrimary,
   );
 
-  // Body styles
+  // Typography - Modern Body copy
   static TextStyle bodyLarge = GoogleFonts.poppins(
     fontSize: 16,
     fontWeight: FontWeight.w500,
     color: AppColors.textPrimary,
-    height: 1.5,
+    height: 1.6,
   );
 
   static TextStyle bodyMedium = GoogleFonts.poppins(
@@ -52,102 +53,102 @@ class AppStyles {
     height: 1.4,
   );
 
-  // Label styles
+  // Typography - UI Labels
   static TextStyle labelLarge = GoogleFonts.poppins(
     fontSize: 14,
-    fontWeight: FontWeight.w600,
+    fontWeight: FontWeight.w700,
     color: AppColors.textPrimary,
+    letterSpacing: 0.5,
   );
 
   static TextStyle labelMedium = GoogleFonts.poppins(
     fontSize: 12,
     fontWeight: FontWeight.w600,
     color: AppColors.textSecondary,
+    letterSpacing: 0.2,
   );
 
   static TextStyle labelSmall = GoogleFonts.poppins(
     fontSize: 10,
     fontWeight: FontWeight.w600,
     color: AppColors.textTertiary,
-    letterSpacing: 0.5,
+    letterSpacing: 0.8,
   );
 
-  // Gradient background
+  // Premium Neon glow decorations
+  static BoxDecoration neonGlowDecoration({required Color color, double blurRadius = 20}) {
+    return BoxDecoration(
+      shape: BoxShape.circle,
+      boxShadow: [
+        BoxShadow(
+          color: color.withOpacity(0.4),
+          blurRadius: blurRadius,
+          spreadRadius: blurRadius / 4,
+        ),
+      ],
+    );
+  }
+
+  // Full Screen gradient background
   static BoxDecoration gradientBackground = const BoxDecoration(
     gradient: LinearGradient(
-      begin: Alignment.topLeft,
-      end: Alignment.bottomRight,
-      colors: AppColors.backgroundGradient,
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+      colors: AppColors.cyberGradient,
     ),
   );
 
-  // Card decoration with modern glass effect
+  // Premium dark-glass card decoration
   static BoxDecoration cardDecoration = BoxDecoration(
     gradient: const LinearGradient(
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
-      colors: [
-        Color(0xFF1A2847),
-        Color(0xFF0F1729),
-      ],
-    ),
-    borderRadius: BorderRadius.circular(20),
-    border: Border.all(
-      color: AppColors.primary.withOpacity(0.2),
-      width: 1,
-    ),
-    boxShadow: [
-      BoxShadow(
-        color: Colors.black.withOpacity(0.3),
-        blurRadius: 12,
-        offset: const Offset(0, 4),
-      ),
-    ],
-  );
-
-  // Premium card with glass effect
-  static BoxDecoration premiumCardDecoration = BoxDecoration(
-    gradient: LinearGradient(
-      begin: Alignment.topLeft,
-      end: Alignment.bottomRight,
-      colors: [
-        AppColors.surface.withOpacity(0.7),
-        AppColors.cardDark.withOpacity(0.4),
-      ],
+      colors: AppColors.cardGradient,
     ),
     borderRadius: BorderRadius.circular(24),
     border: Border.all(
-      color: Colors.white.withOpacity(0.1),
-      width: 1,
+      color: Colors.white.withOpacity(0.05),
+      width: 1.2,
     ),
     boxShadow: [
       BoxShadow(
-        color: Colors.black.withOpacity(0.4),
+        color: Colors.black.withOpacity(0.5),
         blurRadius: 16,
-        offset: const Offset(0, 8),
+        offset: const Offset(0, 10),
       ),
     ],
   );
 
-  // Glassmorphism effect
-  static BoxDecoration glassDecoration = BoxDecoration(
-    color: AppColors.surface.withOpacity(0.1),
-    borderRadius: BorderRadius.circular(20),
-    border: Border.all(
-      color: Colors.white.withOpacity(0.15),
-      width: 1.5,
-    ),
-    boxShadow: [
-      BoxShadow(
-        color: Colors.black.withOpacity(0.2),
-        blurRadius: 20,
-        spreadRadius: 5,
+  // High-fidelity Glow Card
+  static BoxDecoration glowingCardDecoration({required Color accentColor}) {
+    return BoxDecoration(
+      gradient: const LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: AppColors.cardGradient,
       ),
-    ],
-  );
+      borderRadius: BorderRadius.circular(24),
+      border: Border.all(
+        color: accentColor.withOpacity(0.2),
+        width: 1.5,
+      ),
+      boxShadow: [
+        BoxShadow(
+          color: accentColor.withOpacity(0.12),
+          blurRadius: 20,
+          offset: const Offset(0, 8),
+        ),
+        BoxShadow(
+          color: Colors.black.withOpacity(0.4),
+          blurRadius: 12,
+          offset: const Offset(0, 4),
+        ),
+      ],
+    );
+  }
 
-  // Text field decoration
-  static InputDecoration textFieldDecoration(String label, IconData icon) {
+  // Text field decoration helper
+  static InputDecoration textFieldDecoration(String label, IconData icon, {Widget? suffixIcon}) {
     return InputDecoration(
       labelText: label,
       labelStyle: GoogleFonts.poppins(
@@ -155,9 +156,11 @@ class AppStyles {
         fontSize: 14,
         fontWeight: FontWeight.w500,
       ),
-      prefixIcon: Icon(icon, color: AppColors.primary),
+      prefixIcon: Icon(icon, color: AppColors.primary, size: 20),
+      suffixIcon: suffixIcon,
       filled: true,
       fillColor: AppColors.surface,
+      contentPadding: const EdgeInsets.symmetric(vertical: 18, horizontal: 20),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16),
         borderSide: BorderSide.none,
@@ -165,23 +168,23 @@ class AppStyles {
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16),
         borderSide: BorderSide(
-          color: AppColors.textSecondary.withOpacity(0.2),
+          color: Colors.white.withOpacity(0.06),
         ),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16),
         borderSide: const BorderSide(
           color: AppColors.primary,
-          width: 2,
+          width: 1.5,
         ),
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16),
         borderSide: const BorderSide(color: AppColors.error),
       ),
-      contentPadding: const EdgeInsets.symmetric(
-        vertical: 16,
-        horizontal: 16,
+      focusedErrorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(16),
+        borderSide: const BorderSide(color: AppColors.error, width: 1.5),
       ),
     );
   }

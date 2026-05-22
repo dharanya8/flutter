@@ -18,26 +18,26 @@ class SportModel {
       SportModel(
         name: 'Cricket',
         icon: Icons.sports_cricket,
-        color: const Color(0xFF4CAF50),
-        description: 'Join cricket tournaments and matches',
+        color: const Color(0xFF00E5FF), // Cyber Cyan
+        description: 'Join elite cricket tournaments & matches',
       ),
       SportModel(
         name: 'Pickleball',
         icon: Icons.sports_tennis,
-        color: const Color(0xFF2196F3),
-        description: 'Fast-paced pickleball action',
+        color: const Color(0xFF7C3AED), // Royal Purple
+        description: 'Fast-paced pickleball doubles & singles',
       ),
       SportModel(
-        name: 'Football',
-        icon: Icons.sports_soccer,
-        color: const Color(0xFF9C27B0),
-        description: 'Experience the beautiful game',
+        name: 'Carrom',
+        icon: Icons.blur_circular, // Custom premium coin-like circular icon
+        color: const Color(0xFFFF2D55), // Vibrant Neon Pink
+        description: 'Elite carrom board strategy & tournaments',
       ),
       SportModel(
         name: 'Badminton',
-        icon: Icons.sports,
-        color: const Color(0xFFFF9800),
-        description: 'Smash your way to victory',
+        icon: Icons.sports, // Badminton matches
+        color: const Color(0xFFFFC400), // Vivid Gold
+        description: 'Fast shuttle smashes and singles matches',
       ),
     ];
   }
